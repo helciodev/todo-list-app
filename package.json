@@ -1,0 +1,20 @@
+{
+  "name": "todo-list-app",
+  "version": "1.0.0",
+  "description": "This is an app build with webapck, CSS and vanilla JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helciodev/todo-list-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/helciodev/todo-list-app/issues"
+  },
+  "homepage": "https://github.com/helciodev/todo-list-app#readme"
+}
