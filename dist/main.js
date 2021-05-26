@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("this the bela function"),console.log("this the controller module")})();
