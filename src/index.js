@@ -1,14 +1,9 @@
-import bela from './modules/views/todoViews.js';
-import ctrlr from './modules/controller.js';
+// create elements a get elements
 
-bela();
-ctrlr();
-
-// create elemeents a get elements
 const listContainer = document.getElementById('list-container');
 const LOCAL_STORAGE_KEY = 'task.lists';
-const lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
-const addList = document.getElementById('add-list');
+let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
+// const addList = document.getElementById('add-list');
 const listInput = document.getElementById('list-input');
 const formList = document.querySelector('[data-list-new]');
 
@@ -19,6 +14,9 @@ function clearElement(element) {
   }
 }
 
+function createList(name) {
+  return { id: Date.now().toString(), name, tasks: [] };
+}
 function save() {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lists));
 }
@@ -30,17 +28,18 @@ function renderList() {
     listElement.setAttribute('class', 'text-2xl my-2 text-gray-100 uppercase');
     listElement.dataset.listId = list.id;
     listElement.textContent = list.name;
+    listElement.insertAdjacentHTML('beforeend', `
+    <i data-element = ${list.id} class="fa cursor-pointer fa-times-circle" aria-hidden="true"></i>`);
     listContainer.appendChild(listElement);
   });
 }
 
+function renderLocalStorage() {
+  if (localStorage) renderList();
+}
 function saveAndRender() {
   save();
   renderList();
-}
-
-function createList(name) {
-  return { id: Date.now().toString(), name, tasks: [] };
 }
 
 formList.addEventListener('submit', (event) => {
@@ -54,5 +53,11 @@ formList.addEventListener('submit', (event) => {
   listInput.value = '';
   lists.push(list);
   saveAndRender();
-  console.log(lists);
 });
+
+listContainer.addEventListener('click', (event) => {
+  lists = lists.filter((list) => list.id !== event.target.dataset.element);
+  saveAndRender();
+});
+
+renderLocalStorage();
