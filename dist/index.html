@@ -12,7 +12,7 @@
 <body>
   <h1 class="text-4xl font-extrabold uppercase text-center text-white my-10">todo list</h1>
 
-  <div class="container mt-4 w-3/6 mx-auto flex justify-between">
+  <div class="container mt-4 w-3/6 mx-auto items-baseline flex justify-between">
     <div class="my-list-title p-2">
       <h2 class="text-3xl text-gray-700 capitalize mb-2">
         My lists
@@ -24,13 +24,13 @@
       <form data-list-new  class="list-add-title-p flex">
         <input id='list-input' type="text" class=" border-b border-b-white bg-transparent outline-none flex-1 text-white text-xl px-1" placeholder="Create New List">
         <button id="add-list" type="submit">
-          <i class="fa outline-none fa-plus cursor-pointer hover:text-gray-300 text-white p-1" aria-hidden="true"></i>
+          <i class="fa outline-none border-0 fa-plus cursor-pointer hover:text-gray-300 text-white p-1" aria-hidden="true"></i>
         </button>
       </form>
     </div>
-    <!-- <div class="title-and-items  bg-blue-200 w-3/5">
+    <div id="tasks" class="title-and-items hidden bg-blue-200 w-3/5">
       <div class="title">
-        <h2 class="text-2xl font-bold capitalize">title</h2>
+        <h2 id='list-title' class=" ml-2 text-2xl font-bold capitalize">title</h2>
         <ul>
           <li class="item flex items-baseline bg-white border border-b-gray-300 p-1">
             <input type="text" class="flex-1 outline-none px-1">
@@ -38,11 +38,12 @@
           </li>
           <li class="item flex items-baseline bg-white">
             <p class="flex-1 p-1">todo</p>
-            <i class="fa fa-check bg-green-400 cursor-pointer text-white p-1" aria-hidden="true"></i>
-            <i class="fa fa-trash bg-red-400 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            <i class="fa fa-check bg-green-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            <i class="fa fa-edit bg-blue-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            <i class="fa fa-trash bg-red-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
           </li>
         </ul>
-      </div> -->
+      </div>
     </div>
   </div>
   <script src="main.js"></script>
