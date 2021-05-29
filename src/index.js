@@ -8,15 +8,30 @@ const listInput = document.getElementById('list-input');
 const formList = document.querySelector('[data-list-new]');
 const listTitle = document.getElementById('list-title');
 const tasks = document.getElementById('tasks');
+const tasksList = document.getElementById('tasks-list');
+const addTask = document.getElementById('add-tasks');
+const taskInput = document.getElementById('task-input');
+let currentList = lists[lists.length - 1];
+
 // clear element function
 function clearElement(element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
-tasks.classList.remove('.hidden')
+tasks.classList.remove('.hidden');
 function createList(name) {
-  return { id: Date.now().toString(), name, tasks: [] };
+  return {
+    id: Date.now().toString(),
+    name,
+    tasks: [
+      {
+        id: 'sdfddf',
+        name: 'task one',
+        complete: false,
+      },
+    ],
+  };
 }
 
 // function createTask (name){
@@ -40,20 +55,35 @@ function renderList() {
 }
 
 function renderLocalStorage() {
-
   if (localStorage) renderList();
 }
 function saveAndRender() {
   save();
   renderList();
   listTitleRender();
+  taskRenderFn();
 }
 
-function listTitleRender () {
-  if(localStorage){
-    tasks.classList.remove('hidden')
-    listTitle.textContent = lists[lists.length - 1].name
+function listTitleRender() {
+  if (localStorage) {
+    tasks.classList.remove('hidden');
+    listTitle.textContent = lists[lists.length - 1].name;
   }
+}
+
+function taskRenderFn() {
+  currentList.tasks.forEach((task) => {
+    const taskRender = document.importNode(taskRender.content, true);
+    const paragraph = taskRender.querySelector('p');
+    paragraph.textContent = task.name;
+    const firstI = taskRender.getElementById('first-i');
+    const secondI = taskRender.getElementById('second-i');
+    const thirdI = taskRender.getElementById('third-i')
+      [firstI, secondI, thirdI].forEach((icon) => {
+        icon.datasetTaskId = task.id;
+      });
+    tasksList.appendChild(taskRender);
+  });
 }
 
 formList.addEventListener('submit', (event) => {
@@ -76,8 +106,12 @@ listContainer.addEventListener('click', (event) => {
 
 // listtitle change textcontent on list click
 listContainer.addEventListener('click', (event) => {
-  if (event.target.tagName === 'LI'){
-    listTitle.textContent = event.target.textContent
+  currentList = lists.filter((list) => list.id === event.target.dataset.listId);
+  if (event.target.tagName === 'LI') {
+    listTitle.textContent = event.target.textContent;
   }
-})
+  console.log(currentList);
+  console.log(lists);
+});
+
 renderLocalStorage();

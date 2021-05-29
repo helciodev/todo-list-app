@@ -1,4 +1,4 @@
-function ctrlr(){
+function ctrlr() {
   console.log('this the controller module');
 }
 

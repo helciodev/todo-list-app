@@ -29,23 +29,26 @@
       </form>
     </div>
     <div id="tasks" class="title-and-items hidden bg-blue-200 w-3/5">
-      <div class="title">
-        <h2 id='list-title' class=" ml-2 text-2xl font-bold capitalize">title</h2>
-        <ul>
+      <div class="title w-full">
+        <h2 id='list-title' class=" ml-2 w-44 text-2xl font-bold capitalize">title</h2>
+        <ul id="tasks-list">
           <li class="item flex items-baseline bg-white border border-b-gray-300 p-1">
-            <input type="text" class="flex-1 outline-none px-1">
-            <i class="fa fa-plus bg-blue-400 hover:bg-white hover:text-blue-400 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            <input id="task-input" type="text" placeholder="Add Task" class="flex-1 outline-none px-1">
+            <i id="add-task" class="fa fa-plus bg-blue-400 hover:bg-white hover:text-blue-400 cursor-pointer text-white p-1" aria-hidden="true"></i>
           </li>
-          <li class="item flex items-baseline bg-white">
-            <p class="flex-1 p-1">todo</p>
-            <i class="fa fa-check bg-green-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
-            <i class="fa fa-edit bg-blue-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
-            <i class="fa fa-trash bg-red-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
-          </li>
+          
         </ul>
       </div>
     </div>
   </div>
+  <template id='task-render'>
+          <li class="item flex items-baseline bg-white">
+            <p class="flex-1 p-1">todo</p>
+            <i id="first-i" data-task-id class="fa fa-check bg-green-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            <i id="second-i" data-task-id class="fa fa-edit bg-blue-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            <i id="third-i" data-task-id class="fa fa-trash bg-red-400 mr-1 cursor-pointer text-white p-1" aria-hidden="true"></i>
+          </li>
+    </template>
   <script src="main.js"></script>
 </body>
 </html>
