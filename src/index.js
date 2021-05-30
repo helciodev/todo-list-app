@@ -9,9 +9,10 @@ const formList = document.querySelector('[data-list-new]');
 const listTitle = document.getElementById('list-title');
 const tasks = document.getElementById('tasks');
 const tasksList = document.getElementById('tasks-list');
-const addTask = document.getElementById('add-tasks');
+const addTask = document.getElementById('add-task');
 const taskInput = document.getElementById('task-input');
-let currentList = lists[lists.length - 1];
+const taskRender = document.getElementById('task-render');
+let selectedList = lists[lists.length - 1] || '';
 
 // clear element function
 function clearElement(element) {
@@ -24,19 +25,16 @@ function createList(name) {
   return {
     id: Date.now().toString(),
     name,
-    tasks: [
-      {
-        id: 'sdfddf',
-        name: 'task one',
-        complete: false,
-      },
-    ],
+    tasks: [],
   };
 }
 
-// function createTask (name){
-//   return { id: , name, complete:false, priority:'low' }
-// }
+function createTask(name) {
+  return {
+    id: Date.now(), name, complete: false, priority: 'low',
+  };
+}
+
 function save() {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lists));
 }
@@ -57,33 +55,32 @@ function renderList() {
 function renderLocalStorage() {
   if (localStorage) renderList();
 }
+
+listContainer.addEventListener('click', (event) => {
+  selectedList = lists.find((list) => list.id === event.target.dataset.listId);
+  console.log(selectedList);
+  if (event.target.tagName.toLowerCase() === 'li') {
+    tasks.classList.remove('hidden');
+    listTitle.textContent = event.target.textContent;
+  }
+  taskRenderFn();
+  console.log(selectedList);
+});
+
+function taskRenderFn() {
+  clearElement(tasksList);
+  selectedList.tasks.forEach((task) => {
+    const templateElement = document.importNode(taskRender.content, true);
+    const para = templateElement.querySelector('p');
+    para.textContent = task.name;
+    console.log(tasksList.lastChild);
+    tasksList.appendChild(templateElement);
+  });
+}
+
 function saveAndRender() {
   save();
   renderList();
-  listTitleRender();
-  taskRenderFn();
-}
-
-function listTitleRender() {
-  if (localStorage) {
-    tasks.classList.remove('hidden');
-    listTitle.textContent = lists[lists.length - 1].name;
-  }
-}
-
-function taskRenderFn() {
-  currentList.tasks.forEach((task) => {
-    const taskRender = document.importNode(taskRender.content, true);
-    const paragraph = taskRender.querySelector('p');
-    paragraph.textContent = task.name;
-    const firstI = taskRender.getElementById('first-i');
-    const secondI = taskRender.getElementById('second-i');
-    const thirdI = taskRender.getElementById('third-i')
-      [firstI, secondI, thirdI].forEach((icon) => {
-        icon.datasetTaskId = task.id;
-      });
-    tasksList.appendChild(taskRender);
-  });
 }
 
 formList.addEventListener('submit', (event) => {
@@ -99,19 +96,19 @@ formList.addEventListener('submit', (event) => {
   saveAndRender();
 });
 
+addTask.addEventListener('click', () => {
+  const taskName = taskInput.value;
+  if (taskName === null || taskName === '') return;
+  const newTask = createTask(taskName);
+  taskInput.value = '';
+  selectedList.tasks.push(newTask);
+  save();
+  taskRenderFn();
+});
+
 listContainer.addEventListener('click', (event) => {
   lists = lists.filter((list) => list.id !== event.target.dataset.element);
   saveAndRender();
-});
-
-// listtitle change textcontent on list click
-listContainer.addEventListener('click', (event) => {
-  currentList = lists.filter((list) => list.id === event.target.dataset.listId);
-  if (event.target.tagName === 'LI') {
-    listTitle.textContent = event.target.textContent;
-  }
-  console.log(currentList);
-  console.log(lists);
 });
 
 renderLocalStorage();
