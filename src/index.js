@@ -2,6 +2,7 @@
 
 const listContainer = document.getElementById('list-container');
 const LOCAL_STORAGE_KEY = 'task.lists';
+const LOCAL_SELECTED_LIST = 'selected.list';
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
 // const addList = document.getElementById('add-list');
 const listInput = document.getElementById('list-input');
@@ -29,14 +30,15 @@ function createList(name) {
   };
 }
 
-function createTask(name) {
+function createTask(name, priority, dueDate) {
   return {
-    id: Date.now(), name, complete: false, priority: 'low',
+    id: Date.now().toString(), name, complete: false, priority, dueDate,
   };
 }
 
 function save() {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lists));
+  localStorage.setItem(LOCAL_SELECTED_LIST, JSON.stringify(selectedList));
 }
 
 function renderList() {
@@ -56,8 +58,19 @@ function renderLocalStorage() {
   if (localStorage) renderList();
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage['selected.list']){
+    tasks.classList.remove('hidden');
+    listTitle.textContent = selectedList.name;
+    taskRenderFn();
+  }else {
+    return
+  }
+})  
+
 listContainer.addEventListener('click', (event) => {
   selectedList = lists.find((list) => list.id === event.target.dataset.listId);
+  save();
   console.log(selectedList);
   if (event.target.tagName.toLowerCase() === 'li') {
     tasks.classList.remove('hidden');
@@ -69,10 +82,18 @@ listContainer.addEventListener('click', (event) => {
 
 function taskRenderFn() {
   clearElement(tasksList);
-  selectedList.tasks.forEach((task) => {
+  selectedList.tasks.forEach((task, taskIndex) => {
     const templateElement = document.importNode(taskRender.content, true);
     const para = templateElement.querySelector('p');
     para.textContent = task.name;
+    const checkbox = templateElement.querySelector('input');
+    checkbox.classList.add('checked');
+    checkbox.checked = task.complete;
+    const edit = templateElement.getElementById('edit');
+    const deleteTask = templateElement.getElementById('delete');
+    [checkbox, edit, deleteTask].forEach((templateChild) => {
+      templateChild.dataset.listId = taskIndex;
+    })
     console.log(tasksList.lastChild);
     tasksList.appendChild(templateElement);
   });
@@ -110,5 +131,14 @@ listContainer.addEventListener('click', (event) => {
   lists = lists.filter((list) => list.id !== event.target.dataset.element);
   saveAndRender();
 });
+
+window.addEventListener('click', (event) => {
+  if (event.target.id === 'delete') {
+    selectedList.tasks.splice(event.target.dataset.listId, 1);
+    console.log(event.target.dataset.listId)
+    save();
+    taskRenderFn();
+  }
+})
 
 renderLocalStorage();
