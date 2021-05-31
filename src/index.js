@@ -15,6 +15,8 @@ const taskInput = document.getElementById('task-input');
 const taskRender = document.getElementById('task-render');
 let selectedList = lists[lists.length - 1] || '';
 
+// JSON.parse(localStorage.getItem(LOCAL_SELECTED_LIST)
+
 // clear element function
 function clearElement(element) {
   while (element.firstChild) {
@@ -30,9 +32,9 @@ function createList(name) {
   };
 }
 
-function createTask(name, priority, dueDate) {
+function createTask(name, priority, dueDate, description) {
   return {
-    id: Date.now().toString(), name, complete: false, priority, dueDate,
+    id: Date.now().toString(), name, complete: false, description, dueDate, priority,
   };
 }
 
@@ -58,15 +60,15 @@ function renderLocalStorage() {
   if (localStorage) renderList();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (localStorage['selected.list']){
-    tasks.classList.remove('hidden');
-    listTitle.textContent = selectedList.name;
-    taskRenderFn();
-  }else {
-    return
-  }
-})  
+// document.addEventListener('DOMContentLoaded', () => {
+//   if (localStorage['selected.list']){
+//     tasks.classList.remove('hidden');
+//     listTitle.textContent = selectedList.name;
+//     taskRenderFn();
+//   }else {
+//     return
+//   }
+// })
 
 listContainer.addEventListener('click', (event) => {
   selectedList = lists.find((list) => list.id === event.target.dataset.listId);
@@ -84,8 +86,10 @@ function taskRenderFn() {
   clearElement(tasksList);
   selectedList.tasks.forEach((task, taskIndex) => {
     const templateElement = document.importNode(taskRender.content, true);
-    const para = templateElement.querySelector('p');
-    para.textContent = task.name;
+    const paraOne = templateElement.querySelector('#task-title');
+    paraOne.textContent = task.name;
+    const paraTwo = templateElement.querySelector('#description');
+    paraTwo.textContent = task.description;
     const checkbox = templateElement.querySelector('input');
     checkbox.classList.add('checked');
     checkbox.checked = task.complete;
@@ -93,7 +97,7 @@ function taskRenderFn() {
     const deleteTask = templateElement.getElementById('delete');
     [checkbox, edit, deleteTask].forEach((templateChild) => {
       templateChild.dataset.listId = taskIndex;
-    })
+    });
     console.log(tasksList.lastChild);
     tasksList.appendChild(templateElement);
   });
@@ -104,12 +108,15 @@ function saveAndRender() {
   renderList();
 }
 
+function checkText(text) {
+  if (text === null || text === '') return;
+}
 formList.addEventListener('submit', (event) => {
   event.preventDefault();
-
+  console.log(selectedList);
   const listName = listInput.value;
 
-  if (listName === null || listName === '') return;
+  checkText(listName);
 
   const list = createList(listName);
   listInput.value = '';
@@ -119,8 +126,8 @@ formList.addEventListener('submit', (event) => {
 
 addTask.addEventListener('click', () => {
   const taskName = taskInput.value;
-  if (taskName === null || taskName === '') return;
-  const newTask = createTask(taskName);
+  checkText(taskName);
+  const newTask = createTask(taskName,);
   taskInput.value = '';
   selectedList.tasks.push(newTask);
   save();
@@ -129,16 +136,21 @@ addTask.addEventListener('click', () => {
 
 listContainer.addEventListener('click', (event) => {
   lists = lists.filter((list) => list.id !== event.target.dataset.element);
+  console.log(lists.length);
+  console.log(selectedList);
+  // if (lists.length < 1 && !tasks.classList.includes('hidden')){
+  //   tasks.classList.add('hidden');
+  // }
   saveAndRender();
 });
 
 window.addEventListener('click', (event) => {
   if (event.target.id === 'delete') {
     selectedList.tasks.splice(event.target.dataset.listId, 1);
-    console.log(event.target.dataset.listId)
+    console.log(event.target.dataset.listId);
     save();
     taskRenderFn();
   }
-})
+});
 
 renderLocalStorage();
