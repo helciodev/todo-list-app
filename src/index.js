@@ -12,13 +12,18 @@ const tasks = document.getElementById('tasks');
 const tasksList = document.getElementById('tasks-list');
 const addTask = document.getElementById('add-task');
 const taskInput = document.getElementById('task-input');
+const taskInputModal = document.getElementById('task-input-modal');
+const dueDateModal = document.getElementById('date-modal');
+const optionsModal = document.getElementById('option-modal');
+const descriptionModal = document.getElementById('description-modal');
+const saveBtnModal = document.getElementById('save-btn-modal');
 const taskRender = document.getElementById('task-render');
 const dueDate = document.getElementById('date');
 const options = document.getElementById('option');
 const description = document.getElementById('description');
 const taskCountElement = document.getElementById('task-count');
 let selectedList = lists[lists.length - 1] || '';
-
+const modalParent = document.getElementById('modal-parent');
 // JSON.parse(localStorage.getItem(LOCAL_SELECTED_LIST)
 
 // clear element function
@@ -166,10 +171,6 @@ addTask.addEventListener('click', () => {
 
 listContainer.addEventListener('click', (event) => {
   lists = lists.filter((list) => list.id !== event.target.dataset.element);
-
-  // if (lists.length < 1 && !tasks.classList.includes('hidden')){
-  //   tasks.classList.add('hidden');
-  // }
   saveAndRender();
 });
 
@@ -188,6 +189,10 @@ window.addEventListener('click', (event) => {
     renderList();
     taskRenderFn();
     taskCountElement.textContent = tasksCount();
+  } else if (event.target.id === 'edit' || event.target.id === 'close-btn') {
+    modalParent.classList.toggle('center');
+    // newTaskName
+    // if (taskName === null || taskName === '') return;
   }
 });
 

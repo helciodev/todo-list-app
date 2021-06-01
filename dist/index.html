@@ -10,6 +10,31 @@
   <title>Document</title>
 </head>
 <body>
+
+  <div id="modal-parent" class=" modal bg-gray-300 absolute border border-gray-800 p-3 trans">
+    <div class="flex justify-between px-4">
+
+      <h2 class="text-white text-3xl">Edit Task</h2>
+      <button id="close-btn" class="text-center btn-close  rounded-xl my-2 bg-blue-400 hover:bg-blue-500 text-white px-2 outline-none">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    <div class="item  border flex items-baseline p-1">
+      <input id="task-input-modal" type="text" placeholder="Add Task" class="outline-none px-1 bg-blue-200">
+      <input id="date-modal" class="g-red-300" type="date">
+      <select class="bg-red-400" name="options" id="option-modal">
+        <option value="low">low</option>
+        <option value="medium">medium</option>
+        <option value="high">high</option>
+      </select>
+    </div>
+     <div id ='description-parent-modal'>
+        <textarea name="text-area" minlength="30" id="description-modal" cols="10" rows="5" class="w-full pl-2 outline-none h-10" placeholder="Add description"></textarea>
+      </div>
+      <button id="save-btn-modal" class="w-32 text-center  rounded-xl my-2 bg-blue-400 hover:bg-blue-500 text-white p-1 outline-none">
+        save changes
+      </button>
+  </div>
   <h1 class="text-4xl font-extrabold uppercase text-center text-white my-10">todo list</h1>
 
   <div class="container mt-4 w-3/6 mx-auto items-baseline flex justify-between">
