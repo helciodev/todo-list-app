@@ -4,7 +4,6 @@ const listContainer = document.getElementById('list-container');
 const LOCAL_STORAGE_KEY = 'task.lists';
 const LOCAL_SELECTED_LIST = 'selected.list';
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
-// const addList = document.getElementById('add-list');
 const listInput = document.getElementById('list-input');
 const formList = document.querySelector('[data-list-new]');
 const listTitle = document.getElementById('list-title');
@@ -24,7 +23,6 @@ const description = document.getElementById('description');
 const taskCountElement = document.getElementById('task-count');
 let selectedList = lists[lists.length - 1] || '';
 const modalParent = document.getElementById('modal-parent');
-// JSON.parse(localStorage.getItem(LOCAL_SELECTED_LIST)
 
 // clear element function
 function clearElement(element) {
@@ -65,29 +63,6 @@ function renderList() {
   });
 }
 
-function renderLocalStorage() {
-  if (localStorage) renderList();
-}
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   if (localStorage['selected.list']){
-//     tasks.classList.remove('hidden');
-//     listTitle.textContent = selectedList.name;
-//     taskRenderFn();
-//   }else {
-//     return
-//   }
-// })
-function priorityTaskColor(priorityTask) {
-  if (priorityTask.textContent === 'low') {
-    priorityTask.classList.add('text-gray-500', 'font-bold');
-  } else if (priorityTask.textContent === 'medium') {
-    priorityTask.classList.add('text-yellow-500', 'font-bold');
-  } else {
-    priorityTask.classList.add('text-red-500', 'font-bold');
-  }
-}
-
 function taskRenderFn() {
   clearElement(tasksList);
   selectedList.tasks.forEach((task, taskIndex) => {
@@ -113,6 +88,23 @@ function taskRenderFn() {
   });
 }
 
+function renderLocalStorage() {
+  if (localStorage) {
+    renderList();
+    taskRenderFn();
+  }
+}
+
+function priorityTaskColor(priorityTask) {
+  if (priorityTask.textContent === 'low') {
+    priorityTask.classList.add('text-gray-500', 'font-bold');
+  } else if (priorityTask.textContent === 'medium') {
+    priorityTask.classList.add('text-yellow-500', 'font-bold');
+  } else {
+    priorityTask.classList.add('text-red-500', 'font-bold');
+  }
+}
+
 function tasksCount() {
   const tasksToComplete = selectedList.tasks.filter((task) => !task.complete === true).length;
 
@@ -121,8 +113,6 @@ function tasksCount() {
   }
   return `${tasksToComplete} tasks remaining`;
 }
-
-console.log(tasksCount());
 
 listContainer.addEventListener('click', (event) => {
   selectedList = lists.find((list) => list.id === event.target.dataset.listId);
@@ -139,6 +129,24 @@ listContainer.addEventListener('click', (event) => {
 function saveAndRender() {
   save();
   renderList();
+}
+
+function editTasks(taskToEdit) {
+  const newTaskName = taskInputModal.value;
+  if (newTaskName === null || newTaskName === '') return;
+  taskToEdit.name = newTaskName;
+
+  if (optionsModal.value !== null || optionsModal.value !== '') {
+    taskToEdit.priority = optionsModal.value;
+  }
+
+  if (descriptionModal.value !== null || descriptionModal.value !== '') {
+    taskToEdit.description = descriptionModal.value;
+  }
+
+  if (dueDateModal.value !== null || dueDateModal.value !== '') {
+    taskToEdit.dueDate = dueDateModal.value;
+  }
 }
 
 formList.addEventListener('submit', (event) => {
@@ -191,8 +199,12 @@ window.addEventListener('click', (event) => {
     taskCountElement.textContent = tasksCount();
   } else if (event.target.id === 'edit' || event.target.id === 'close-btn') {
     modalParent.classList.toggle('center');
-    // newTaskName
-    // if (taskName === null || taskName === '') return;
+    saveBtnModal.addEventListener('click', () => {
+      editTasks(selectedList.tasks[event.target.dataset.taskIndex]);
+      modalParent.classList.toggle('center');
+      taskRenderFn();
+      save();
+    });
   }
 });
 
