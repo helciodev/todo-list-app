@@ -28,12 +28,15 @@
         </button>
       </form>
     </div>
-    <div id="tasks" class="title-and-items hidden bg-blue-200 w-3/5">
+    <div id="tasks" class="title-and-items hidden bg-blue-200 w-2/3">
       <div class="title w-full">
-        <h2 id='list-title' class=" ml-2 w-44 text-2xl font-bold capitalize"></h2>
+        <div class="flex justify-between items-baseline">
+          <h2 id='list-title' class=" ml-2 w-44 text-2xl font-bold capitalize"></h2>
+          <p id="task-count" class="text-sm text-gray-700 mr-2">3 tasks remaining</p>
+        </div>
           <div class="item bg-white border flex items-baseline border-b-gray-300 p-1">
-            <input id="task-input" type="text" placeholder="Add Task" class="outline-none px-1">
-            <input id="date" class="g-red-300 w-10" type="date">
+            <input id="task-input" type="text" placeholder="Add Task" class="outline-none px-1 bg-blue-200">
+            <input id="date" class="g-red-300" type="date">
             <select class="bg-red-400" name="options" id="option">
               <option value="low">low</option>
               <option value="medium">medium</option>
@@ -53,14 +56,18 @@
     </div>
   </div>
   <template id='task-render'>
-          <li class="item flex items-baseline bg-white">
-            <input type="checkbox"  class=" ml-1 p-1 mr-1" aria-hidden="true"></input>
-            <p id="task-title" class="flex-1 p-1">todo</p>
+          <li class="item border border-b-blue-700 flex items-baseline bg-white">
+            <input id="checkbox" type="checkbox"  class=" ml-1 p-1 mr-1" aria-hidden="true"></input>
+            <p id="task-title" class="flex-1 p-1 font-bold text-gray-500">todo</p>
             <i id="edit"  class="fa fa-edit bg-blue-400 mr-1 hover:bg-blue-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
             <i id="delete"  class="fa fa-trash bg-red-400 mr-1 hover:bg-red-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
           </li>
-          <li>
-            <p id="description"></p>
+          <li class="bg-white">
+            <p class="ml-3  px-1 py-2 border-b-blue-700" id="description-para"></p>
+            <div class="flex items-baseline justify-around border border-t-blue-700">
+              <p id="due-date-display"></p>
+              <p id="priority-display"></p>
+            </div>
           </li>
     </template>
   <script src="main.js"></script>

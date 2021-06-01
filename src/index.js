@@ -13,6 +13,10 @@ const tasksList = document.getElementById('tasks-list');
 const addTask = document.getElementById('add-task');
 const taskInput = document.getElementById('task-input');
 const taskRender = document.getElementById('task-render');
+const dueDate = document.getElementById('date');
+const options = document.getElementById('option');
+const description = document.getElementById('description');
+const taskCountElement = document.getElementById('task-count');
 let selectedList = lists[lists.length - 1] || '';
 
 // JSON.parse(localStorage.getItem(LOCAL_SELECTED_LIST)
@@ -69,18 +73,15 @@ function renderLocalStorage() {
 //     return
 //   }
 // })
-
-listContainer.addEventListener('click', (event) => {
-  selectedList = lists.find((list) => list.id === event.target.dataset.listId);
-  save();
-  console.log(selectedList);
-  if (event.target.tagName.toLowerCase() === 'li') {
-    tasks.classList.remove('hidden');
-    listTitle.textContent = event.target.textContent;
+function priorityTaskColor(priorityTask) {
+  if (priorityTask.textContent === 'low') {
+    priorityTask.classList.add('text-gray-500', 'font-bold');
+  } else if (priorityTask.textContent === 'medium') {
+    priorityTask.classList.add('text-yellow-500', 'font-bold');
+  } else {
+    priorityTask.classList.add('text-red-500', 'font-bold');
   }
-  taskRenderFn();
-  console.log(selectedList);
-});
+}
 
 function taskRenderFn() {
   clearElement(tasksList);
@@ -88,7 +89,12 @@ function taskRenderFn() {
     const templateElement = document.importNode(taskRender.content, true);
     const paraOne = templateElement.querySelector('#task-title');
     paraOne.textContent = task.name;
-    const paraTwo = templateElement.querySelector('#description');
+    const dueDateDisplay = templateElement.getElementById('due-date-display');
+    dueDateDisplay.textContent = task.dueDate;
+    const prioryDisplay = templateElement.getElementById('priority-display');
+    prioryDisplay.textContent = task.priority;
+    priorityTaskColor(prioryDisplay);
+    const paraTwo = templateElement.querySelector('#description-para');
     paraTwo.textContent = task.description;
     const checkbox = templateElement.querySelector('input');
     checkbox.classList.add('checked');
@@ -96,27 +102,45 @@ function taskRenderFn() {
     const edit = templateElement.getElementById('edit');
     const deleteTask = templateElement.getElementById('delete');
     [checkbox, edit, deleteTask].forEach((templateChild) => {
-      templateChild.dataset.listId = taskIndex;
+      templateChild.dataset.taskIndex = taskIndex;
     });
-    console.log(tasksList.lastChild);
     tasksList.appendChild(templateElement);
   });
 }
+
+function tasksCount() {
+  const tasksToComplete = selectedList.tasks.filter((task) => !task.complete === true).length;
+
+  if (tasksToComplete === 1) {
+    return `${tasksToComplete} task remaining`;
+  }
+  return `${tasksToComplete} tasks remaining`;
+}
+
+console.log(tasksCount());
+
+listContainer.addEventListener('click', (event) => {
+  selectedList = lists.find((list) => list.id === event.target.dataset.listId);
+  save();
+
+  if (event.target.tagName.toLowerCase() === 'li') {
+    tasks.classList.remove('hidden');
+    listTitle.textContent = event.target.textContent;
+    taskCountElement.textContent = tasksCount();
+  }
+  taskRenderFn();
+});
 
 function saveAndRender() {
   save();
   renderList();
 }
 
-function checkText(text) {
-  if (text === null || text === '') return;
-}
 formList.addEventListener('submit', (event) => {
   event.preventDefault();
-  console.log(selectedList);
   const listName = listInput.value;
 
-  checkText(listName);
+  if (listName === null || listName === '') return;
 
   const list = createList(listName);
   listInput.value = '';
@@ -126,18 +150,23 @@ formList.addEventListener('submit', (event) => {
 
 addTask.addEventListener('click', () => {
   const taskName = taskInput.value;
-  checkText(taskName);
-  const newTask = createTask(taskName,);
+  const due = dueDate.value;
+  const desc = description.value;
+  const optsPriority = options.value;
+  if (taskName === null || taskName === '') return;
+  const newTask = createTask(taskName, optsPriority, due, desc);
   taskInput.value = '';
+  description.value = '';
+  dueDate.value = null;
   selectedList.tasks.push(newTask);
   save();
   taskRenderFn();
+  taskCountElement.textContent = tasksCount();
 });
 
 listContainer.addEventListener('click', (event) => {
   lists = lists.filter((list) => list.id !== event.target.dataset.element);
-  console.log(lists.length);
-  console.log(selectedList);
+
   // if (lists.length < 1 && !tasks.classList.includes('hidden')){
   //   tasks.classList.add('hidden');
   // }
@@ -147,9 +176,18 @@ listContainer.addEventListener('click', (event) => {
 window.addEventListener('click', (event) => {
   if (event.target.id === 'delete') {
     selectedList.tasks.splice(event.target.dataset.listId, 1);
-    console.log(event.target.dataset.listId);
     save();
     taskRenderFn();
+  } else if (event.target.id === 'checkbox') {
+    if (event.target.checked) {
+      selectedList.tasks[event.target.dataset.taskIndex].complete = true;
+    } else {
+      selectedList.tasks[event.target.dataset.taskIndex].complete = false;
+    }
+    save();
+    renderList();
+    taskRenderFn();
+    taskCountElement.textContent = tasksCount();
   }
 });
 

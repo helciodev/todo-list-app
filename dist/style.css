@@ -9,6 +9,6 @@ body {
 	height: 100vh;
 }
 
-input[type ="checkbox"]:checked + p {
+input[type="checkbox"]:checked + p {
 	text-decoration: line-through;
 }
