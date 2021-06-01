@@ -30,3 +30,7 @@ input[type="checkbox"]:checked + p {
 .btn-close i {
 	pointer-events: none;
 }
+
+.back-red {
+	background-color: rgb(221, 51, 51);
+}

@@ -17,6 +17,7 @@ const optionsModal = document.getElementById('option-modal');
 const descriptionModal = document.getElementById('description-modal');
 const saveBtnModal = document.getElementById('save-btn-modal');
 const taskRender = document.getElementById('task-render');
+
 const dueDate = document.getElementById('date');
 const options = document.getElementById('option');
 const description = document.getElementById('description');
@@ -63,6 +64,16 @@ function renderList() {
   });
 }
 
+function priorityTaskColor(priorityTask) {
+  if (priorityTask.textContent === 'low') {
+    priorityTask.classList.add('text-gray-500', 'font-bold');
+  } else if (priorityTask.textContent === 'medium') {
+    priorityTask.classList.add('text-yellow-500', 'font-bold');
+  } else {
+    priorityTask.classList.add('text-red-500', 'font-bold');
+  }
+}
+
 function taskRenderFn() {
   clearElement(tasksList);
   selectedList.tasks.forEach((task, taskIndex) => {
@@ -92,16 +103,6 @@ function renderLocalStorage() {
   if (localStorage) {
     renderList();
     taskRenderFn();
-  }
-}
-
-function priorityTaskColor(priorityTask) {
-  if (priorityTask.textContent === 'low') {
-    priorityTask.classList.add('text-gray-500', 'font-bold');
-  } else if (priorityTask.textContent === 'medium') {
-    priorityTask.classList.add('text-yellow-500', 'font-bold');
-  } else {
-    priorityTask.classList.add('text-red-500', 'font-bold');
   }
 }
 
@@ -149,6 +150,13 @@ function editTasks(taskToEdit) {
   }
 }
 
+function renderCurrentValues(currentListTask) {
+  taskInputModal.value = currentListTask.name;
+  dueDateModal.value = currentListTask.dueDate;
+  optionsModal.value = currentListTask.priority;
+  descriptionModal.value = currentListTask.description;
+}
+
 formList.addEventListener('submit', (event) => {
   event.preventDefault();
   const listName = listInput.value;
@@ -190,6 +198,10 @@ window.addEventListener('click', (event) => {
   } else if (event.target.id === 'checkbox') {
     if (event.target.checked) {
       selectedList.tasks[event.target.dataset.taskIndex].complete = true;
+      console.log(event.target.parentNode.parentNode)
+
+      event.target.parentNode.parentNode.classList.remove('bg-white')
+      event.target.parentNode.parentNode.classList.add('back-red')
     } else {
       selectedList.tasks[event.target.dataset.taskIndex].complete = false;
     }
@@ -199,6 +211,7 @@ window.addEventListener('click', (event) => {
     taskCountElement.textContent = tasksCount();
   } else if (event.target.id === 'edit' || event.target.id === 'close-btn') {
     modalParent.classList.toggle('center');
+    renderCurrentValues(selectedList.tasks[event.target.dataset.taskIndex]);
     saveBtnModal.addEventListener('click', () => {
       editTasks(selectedList.tasks[event.target.dataset.taskIndex]);
       modalParent.classList.toggle('center');

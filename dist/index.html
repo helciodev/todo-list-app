@@ -81,19 +81,21 @@
     </div>
   </div>
   <template id='task-render'>
-          <li class="item border border-b-blue-700 flex items-baseline bg-white">
-            <input id="checkbox" type="checkbox"  class=" ml-1 p-1 mr-1" aria-hidden="true"></input>
-            <p id="task-title" class="flex-1 p-1 font-bold text-gray-500">todo</p>
-            <i id="edit"  class="fa fa-edit bg-blue-400 mr-1 hover:bg-blue-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
-            <i id="delete"  class="fa fa-trash bg-red-400 mr-1 hover:bg-red-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
-          </li>
-          <li class="bg-white">
-            <p class="ml-3  px-1 py-2 border-b-blue-700" id="description-para"></p>
-            <div class="flex items-baseline justify-around border border-t-blue-700">
-              <p id="due-date-display"></p>
-              <p id="priority-display"></p>
-            </div>
-          </li>
+    <div class="bg-white">
+      <li class="item border border-b-blue-700 flex items-baseline">
+        <input id="checkbox" type="checkbox"  class=" ml-1 p-1 mr-1" aria-hidden="true"></input>
+        <p id="task-title" class="flex-1 p-1 font-bold text-gray-500"></p>
+        <i id="edit"  class="fa fa-edit bg-blue-400 mr-1 hover:bg-blue-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
+        <i id="delete"  class="fa fa-trash bg-red-400 mr-1 hover:bg-red-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
+      </li>
+      <li id="next-sibling">
+        <p class="ml-3  px-1 py-2 border-b-blue-700" id="description-para"></p>
+        <div class="flex items-baseline justify-around border border-t-blue-700">
+          <p id="due-date-display"></p>
+          <p id="priority-display"></p>
+        </div>
+      </li>
+    </div>
     </template>
   <script src="main.js"></script>
 </body>
