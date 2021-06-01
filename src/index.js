@@ -198,10 +198,8 @@ window.addEventListener('click', (event) => {
   } else if (event.target.id === 'checkbox') {
     if (event.target.checked) {
       selectedList.tasks[event.target.dataset.taskIndex].complete = true;
-      console.log(event.target.parentNode.parentNode)
-
-      event.target.parentNode.parentNode.classList.remove('bg-white')
-      event.target.parentNode.parentNode.classList.add('back-red')
+      event.target.parentNode.parentNode.classList.remove('bg-white');
+      event.target.parentNode.parentNode.classList.add('back-red');
     } else {
       selectedList.tasks[event.target.dataset.taskIndex].complete = false;
     }
