@@ -17,7 +17,6 @@ const optionsModal = document.getElementById('option-modal');
 const descriptionModal = document.getElementById('description-modal');
 const saveBtnModal = document.getElementById('save-btn-modal');
 const taskRender = document.getElementById('task-render');
-
 const dueDate = document.getElementById('date');
 const options = document.getElementById('option');
 const description = document.getElementById('description');
@@ -26,32 +25,30 @@ let selectedList = lists[lists.length - 1] || '';
 const modalParent = document.getElementById('modal-parent');
 
 // clear element function
-function clearElement(element) {
+const clearElement = (element) => {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
-}
+};
+
 tasks.classList.remove('.hidden');
-function createList(name) {
-  return {
-    id: Date.now().toString(),
-    name,
-    tasks: [],
-  };
-}
 
-function createTask(name, priority, dueDate, description) {
-  return {
-    id: Date.now().toString(), name, complete: false, description, dueDate, priority,
-  };
-}
+const createList = (name) => ({
+  id: Date.now().toString(),
+  name,
+  tasks: [],
+});
 
-function save() {
+const createTask = (name, priority, dueDate, description, complete = false) => ({
+  id: Date.now().toString(), name, priority, dueDate, description, complete,
+});
+
+const save = () => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lists));
   localStorage.setItem(LOCAL_SELECTED_LIST, JSON.stringify(selectedList));
-}
+};
 
-function renderList() {
+const renderList = () => {
   clearElement(listContainer);
   lists.forEach((list) => {
     const listElement = document.createElement('li');
@@ -62,9 +59,9 @@ function renderList() {
     <i data-element = ${list.id} class="fa cursor-pointer fa-times-circle" aria-hidden="true"></i>`);
     listContainer.appendChild(listElement);
   });
-}
+};
 
-function priorityTaskColor(priorityTask) {
+const priorityTaskColor = (priorityTask) => {
   if (priorityTask.textContent === 'low') {
     priorityTask.classList.add('text-gray-500', 'font-bold');
   } else if (priorityTask.textContent === 'medium') {
@@ -72,9 +69,9 @@ function priorityTaskColor(priorityTask) {
   } else {
     priorityTask.classList.add('text-red-500', 'font-bold');
   }
-}
+};
 
-function taskRenderFn() {
+const taskRenderFn = () => {
   clearElement(tasksList);
   selectedList.tasks.forEach((task, taskIndex) => {
     const templateElement = document.importNode(taskRender.content, true);
@@ -97,23 +94,23 @@ function taskRenderFn() {
     });
     tasksList.appendChild(templateElement);
   });
-}
+};
 
-function renderLocalStorage() {
+const renderLocalStorage = () => {
   if (localStorage) {
     renderList();
     taskRenderFn();
   }
-}
+};
 
-function tasksCount() {
+const tasksCount = () => {
   const tasksToComplete = selectedList.tasks.filter((task) => !task.complete === true).length;
 
   if (tasksToComplete === 1) {
     return `${tasksToComplete} task remaining`;
   }
   return `${tasksToComplete} tasks remaining`;
-}
+};
 
 listContainer.addEventListener('click', (event) => {
   selectedList = lists.find((list) => list.id === event.target.dataset.listId);
@@ -127,12 +124,9 @@ listContainer.addEventListener('click', (event) => {
   taskRenderFn();
 });
 
-function saveAndRender() {
-  save();
-  renderList();
-}
+const saveAndRender = () => save(); renderList();
 
-function editTasks(taskToEdit) {
+const editTasks = (taskToEdit) => {
   const newTaskName = taskInputModal.value;
   if (newTaskName === null || newTaskName === '') return;
   taskToEdit.name = newTaskName;
@@ -148,14 +142,14 @@ function editTasks(taskToEdit) {
   if (dueDateModal.value !== null || dueDateModal.value !== '') {
     taskToEdit.dueDate = dueDateModal.value;
   }
-}
+};
 
-function renderCurrentValues(currentListTask) {
+const renderCurrentValues = (currentListTask) => {
   taskInputModal.value = currentListTask.name;
   dueDateModal.value = currentListTask.dueDate;
   optionsModal.value = currentListTask.priority;
   descriptionModal.value = currentListTask.description;
-}
+};
 
 formList.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -192,14 +186,13 @@ listContainer.addEventListener('click', (event) => {
 
 window.addEventListener('click', (event) => {
   if (event.target.id === 'delete') {
-    selectedList.tasks.splice(event.target.dataset.listId, 1);
+    selectedList.tasks.splice(event.target.dataset.taskIndex, 1);
     save();
     taskRenderFn();
+    taskCountElement.textContent = tasksCount();
   } else if (event.target.id === 'checkbox') {
     if (event.target.checked) {
       selectedList.tasks[event.target.dataset.taskIndex].complete = true;
-      event.target.parentNode.parentNode.classList.remove('bg-white');
-      event.target.parentNode.parentNode.classList.add('back-red');
     } else {
       selectedList.tasks[event.target.dataset.taskIndex].complete = false;
     }
