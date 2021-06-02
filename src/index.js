@@ -3,7 +3,13 @@
 const listContainer = document.getElementById('list-container');
 const LOCAL_STORAGE_KEY = 'task.lists';
 const LOCAL_SELECTED_LIST = 'selected.list';
-let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
+let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
+  {
+    id: Date.now().toString(),
+    name: 'default',
+    tasks: [],
+  },
+];
 const listInput = document.getElementById('list-input');
 const formList = document.querySelector('[data-list-new]');
 const listTitle = document.getElementById('list-title');
@@ -124,7 +130,10 @@ listContainer.addEventListener('click', (event) => {
   taskRenderFn();
 });
 
-const saveAndRender = () => save(); renderList();
+const saveAndRender = () => {
+  save();
+  renderList();
+};
 
 const editTasks = (taskToEdit) => {
   const newTaskName = taskInputModal.value;
