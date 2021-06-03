@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="modal-parent" class=" modal bg-gray-300 absolute border border-gray-800 p-3 trans">
+    <div class="flex justify-between px-4">
+
+      <h2 class="text-white text-3xl">Edit Task</h2>
+      <button id="close-btn" class="text-center btn-close  rounded-xl my-2 bg-blue-400 hover:bg-blue-500 text-white px-2 outline-none">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    <div class="item  border flex items-baseline p-1">
+      <input id="task-input-modal" type="text" placeholder="Add Task" class="outline-none px-1 bg-blue-200">
+      <input id="date-modal" class="g-red-300" type="date">
+      <select class="bg-red-400" name="options" id="option-modal">
+        <option value="low">low</option>
+        <option value="medium">medium</option>
+        <option value="high">high</option>
+      </select>
+    </div>
+     <div id ='description-parent-modal'>
+        <textarea name="text-area" minlength="30" id="description-modal" cols="10" rows="5" class="w-full pl-2 outline-none h-10" placeholder="Add description"></textarea>
+      </div>
+      <button id="save-btn-modal" class="w-32 text-center  rounded-xl my-2 bg-blue-400 hover:bg-blue-500 text-white p-1 outline-none">
+        save changes
+      </button>
+  </div>
+  <h1 class="text-4xl font-extrabold uppercase text-center text-white my-10">todo list</h1>
+
+  <div class="container mt-4 w-3/6 mx-auto items-baseline flex justify-between">
+    <div class="my-list-title p-2">
+      <h2 class="text-3xl text-gray-700 capitalize mb-2">
+        My lists
+      </h2>
+      <ul id="list-container">
+        <!-- <li class="text-2xl my-2 text-gray-100 uppercase">list one</li>
+        <li class="text-2xl my-2 text-gray-100 uppercase">list two</li> -->
+      </ul>
+      <form data-list-new  class="list-add-title-p flex">
+        <input id='list-input' type="text" class=" border-b border-b-white bg-transparent outline-none flex-1 text-white text-xl px-1" placeholder="Create New List">
+        <button id="add-list" type="submit">
+          <i class="fa outline-none border-0 fa-plus cursor-pointer hover:text-gray-300 text-white p-1" aria-hidden="true"></i>
+        </button>
+      </form>
+    </div>
+    <div id="tasks" class="title-and-items hidden bg-blue-200 w-2/3">
+      <div class="title w-full">
+        <div class="flex justify-between items-baseline">
+          <h2 id='list-title' class=" ml-2 w-44 text-2xl font-bold capitalize"></h2>
+          <p id="task-count" class="text-sm text-gray-700 mr-2">3 tasks remaining</p>
+        </div>
+          <div class="item bg-white border flex items-baseline border-b-gray-300 p-1">
+            <input id="task-input" type="text" placeholder="Add Task" class="outline-none px-1 bg-blue-200">
+            <input id="date" class="g-red-300" type="date">
+            <select class="bg-red-400" name="options" id="option">
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+            </select>
+          </div>
+           <div id ='description-parent'>
+              <textarea name="text-area" minlength="30" id="description" cols="10" rows="5" class="w-full outline-none h-10" placeholder="Add description"></textarea>
+            </div>
+            <div class="flex justify-center">
+              <i id="add-task" class="fa w-32 text-center  rounded-xl my-2 fa-plus bg-blue-400 hover:bg-blue-500 cursor-pointer text-white p-1" aria-hidden="true"></i>
+            </div>
+        <ul id="tasks-list">
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <template id='task-render'>
+    <div id="task-container" class="bg-white">
+      <li class="item border border-b-blue-700 flex items-baseline">
+        <input id="checkbox" type="checkbox"  class=" ml-1 p-1 mr-1" aria-hidden="true"></input>
+        <p id="task-title" class="flex-1 p-1 font-bold text-gray-500"></p>
+        <i id="edit"  class="fa fa-edit bg-blue-400 mr-1 hover:bg-blue-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
+        <i id="delete"  class="fa fa-trash bg-red-400 mr-1 hover:bg-red-600 cursor-pointer text-white p-1" aria-hidden="true"></i>
+      </li>
+      <li id="next-sibling">
+        <p class="ml-3  px-1 py-2 border-b-blue-700" id="description-para"></p>
+        <div class="flex items-baseline justify-around border border-t-blue-700">
+          <p id="due-date-display"></p>
+          <p id="priority-display"></p>
+        </div>
+      </li>
+    </div>
+    </template>
+  <script src="main.js"></script>
+</body>
+</html>

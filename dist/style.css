@@ -1,0 +1,36 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+	height: 100vh;
+}
+
+input[type="checkbox"]:checked + p {
+	text-decoration: line-through;
+}
+
+.modal {
+	margin: 0;
+	position: absolute;
+	top: -50%;
+	left: 55%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	transition: all 0.5s ease-out;
+}
+
+.center {
+	top: 50%;
+}
+
+.btn-close i {
+	pointer-events: none;
+}
+
+.back-red {
+	background-color: rgb(221, 51, 51);
+}
