@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "webpack --watch",
+		"tests": "jest",
 		"dev": "webpack --mode development",
 		"build-production": "webpack --mode production",
 		"start": "webpack-dev-server --mode development --open"
@@ -24,5 +25,8 @@
 		"webpack": "^5.37.1",
 		"webpack-cli": "^4.7.0",
 		"webpack-dev-server": "^3.11.2"
+	},
+	"dependencies": {
+		"babel": "^6.23.0"
 	}
 }
