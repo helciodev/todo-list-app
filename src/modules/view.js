@@ -40,7 +40,7 @@ export const renderList = (listArr) => {
   });
 };
 
-const priorityTaskColor = (priorityTask) => {
+export const priorityTaskColor = (priorityTask) => {
   if (priorityTask.textContent === 'low') {
     priorityTask.classList.add('text-gray-500', 'font-bold');
   } else if (priorityTask.textContent === 'medium') {
