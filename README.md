@@ -8,6 +8,7 @@
 - [Built with](#built-with)
 - [Getting started](#getting-started)
   - [Installation instructions](#installation-instructions)
+- [testing](#tests)
 - [Author](#author)
 - [Show your support](#show-your-support)
 - [License](#-license)
@@ -63,6 +64,11 @@ Follow along the steps below to get a copy at your local machine.
 - Start the server with `npm run start`
 - The site should automatically open in your browser at http://localhost:8080/ if it didn't then open your browser with that link.
 
+### tests
+ To run tests run npm run tests in your command line
+  ``` 
+  npm run tests
+   ```
 ## Author
 
 😎 **Helcio André**
