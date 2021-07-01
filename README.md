@@ -1,4 +1,4 @@
-# Tdo-list-app
+# Todo-list-app
 
 ## Table of contents
 
