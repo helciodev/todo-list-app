@@ -17,7 +17,7 @@
 
 ## About
 
-Todo list build with the power of Javascript and tailwindCSS
+A todo app where the user can Add/Edit/Delete todos. Todos are saved to the localStorage, so the user can access his lists and tasks anytime.
 
 ![Screenshot-main-page](dist/todo-list.png)
 
